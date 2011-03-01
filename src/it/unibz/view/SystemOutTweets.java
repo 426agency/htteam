@@ -30,14 +30,14 @@ public class SystemOutTweets implements TweetFetcher {
 	 * @param args	no arguments needed
 	 * @throws TweetException	if something goes wrong
 	 */
-	public static void main(String[] args) throws TweetException {
+	/*public static void main(String[] args) throws TweetException {
 	
 		System.out.println("Start tweeting:");
-		User u = new User();
+		//User u = new User();
 		//t.getTweets(u);
 		//t.getFollowing(u);
 		Tweetproducer.getFollowing(u);
 		//System.out.println("The End; last tweet: " + id);
-	}
+	}*/
 
 }
