@@ -1,4 +1,6 @@
-package it.unibz.model;
+package it.unibz.utils;
+
+import it.unibz.exception.TweetException;
 
 import org.dom4j.Element;
 

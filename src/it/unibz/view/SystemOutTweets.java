@@ -1,9 +1,9 @@
 package it.unibz.view;
 
-import it.unibz.model.TweetException;
-import it.unibz.model.TweetFetcher;
-import it.unibz.model.Tweetproducer;
+import it.unibz.exception.TweetException;
 import it.unibz.model.User;
+import it.unibz.utils.TweetFetcher;
+import it.unibz.utils.Tweetproducer;
 
 import org.dom4j.Element;
 
@@ -36,7 +36,7 @@ public class SystemOutTweets implements TweetFetcher {
 		User u = new User();
 		//t.getTweets(u);
 		//t.getFollowing(u);
-		Tweetproducer.getNotifications(u);
+		Tweetproducer.getFollowing(u);
 		//System.out.println("The End; last tweet: " + id);
 	}
 

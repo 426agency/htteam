@@ -1,4 +1,6 @@
-package it.unibz.model;
+package it.unibz.utils;
+
+import it.unibz.model.User;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
