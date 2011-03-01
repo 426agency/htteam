@@ -2,7 +2,6 @@ package it.unibz.view;
 
 import it.unibz.exception.TweetException;
 import it.unibz.model.User;
-import it.unibz.utils.TweetFetcher;
 import it.unibz.utils.Tweetproducer;
 
 import org.dom4j.Element;
@@ -11,7 +10,7 @@ import org.dom4j.Element;
  * Class that can be used to test if the TweetProducer works.
  * Writes every tweet to the system out as XML.
  */
-public class SystemOutTweets implements TweetFetcher {
+public class SystemOutTweets {
 	
 	/**
 	 * Writes the XML of a tweet element to the System.out.
