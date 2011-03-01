@@ -1,6 +1,24 @@
 package it.unibz.model;
 
 public class User {
+	
+	//String username=null;
+	String accesstoken=null;
+	String tokensecret=null;
+
+	public User(String accesstoken, String tokensecret) {
+		super();
+		this.accesstoken = accesstoken;
+		this.tokensecret = tokensecret;
+	}
+
+	public String getAccesstoken() {
+		return accesstoken;
+	}
+
+	public String getTokensecret() {
+		return tokensecret;
+	}
 
 	public String getUserAccessToken() {
 		// TODO Auto-generated method stub
