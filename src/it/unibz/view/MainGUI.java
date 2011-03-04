@@ -38,6 +38,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.JCheckBox;
@@ -271,6 +272,7 @@ Loginout();				}
 			DefaultListModel model = new DefaultListModel();
 
 			jFollowerList = new JList(model);
+			jFollowerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			jFollowerList.addMouseListener(new MouseListener() {
 				
 				@Override
@@ -373,7 +375,7 @@ Loginout();				}
 			if(loggeduser==null){
 				//Start pin procedure
 				try {
-					//loggeduser=OAuthProducer.getFirstTimeAcessCode();
+					loggeduser=OAuthProducer.getFirstTimeAccessCode(getJFrame());
 				} catch (Exception e) {
 					
 				}
@@ -390,6 +392,7 @@ Loginout();				}
 		}
 		else{
 			OAuthProducer.removeAccess();
+			loggeduser=null;
 			loginMenuItem.setText("Login");
 RefreshFollowing();			
 		}

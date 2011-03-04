@@ -34,7 +34,7 @@ case 1:{
 	if(loggeduser==null){
 		//Start pin procedure
 		try {
-			loggeduser=OAuthProducer.getFirstTimeAccessCode();
+			loggeduser=OAuthProducer.getFirstTimeAccessCode(null);
 		} catch (Exception e) {
 			
 		}
