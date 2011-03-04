@@ -291,7 +291,13 @@ Loginout();				}
 							
 							@Override
 							public void actionPerformed(ActionEvent arg0) {
-JOptionPane.showMessageDialog(getJFrame(), "FAKE User Unfollowed");								
+								String name = (String)jFollowerList.getModel().getElementAt(jFollowerList.getSelectedIndex());
+								if (CallInvoker.unfollowUser(loggeduser, name)){
+								   JOptionPane.showMessageDialog(getJFrame(), "User " + name +" unfollowed");	
+								} else {
+									JOptionPane.showMessageDialog(getJFrame(), "There was an error...");		
+								}
+								RefreshFollowing();
 							}
 						});
 						contextMenu.add(mi);

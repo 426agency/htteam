@@ -26,18 +26,21 @@ import org.xml.sax.InputSource;
 public class CallInvoker {
 	private static OAuthConsumer consumer=null;
 
-
+	
 	private static String useService(User user, String url){
+		return useService(user, url, "GET");
+	}
+
+	private static String useService(User user, String url, String method){
 		String line = null;
 		try {
 			OAuthConsumer consumer = Login(user);
 			URL uu = new URL(url);
 			// create an HTTP request to a protected resource
 			HttpURLConnection request =  (HttpURLConnection)uu.openConnection();
-			request.setRequestMethod("GET");
+			request.setRequestMethod(method);
 			request.setDoOutput(true);
 			request.setReadTimeout(10000);
-
 			// sign the request
 			consumer.sign(request);
 			BufferedReader rd  = new BufferedReader(new InputStreamReader(request.getInputStream()));
@@ -101,10 +104,10 @@ public class CallInvoker {
 	
 	public static ArrayList<Follower> getFollowing(User user) {
 		//http://api.twitter.com/version/notifications/follow
-		String followersId = useService(user, "http://api.twitter.com/1/followers/ids.xml");
+		String followersId = useService(user, "http://api.twitter.com/1/friends/ids.xml");
 		Document dom = stringToDom(followersId);
 		NodeList nodeList = dom.getElementsByTagName("id");
-		Follower u = new Follower();
+		Follower u;
 		ArrayList<Follower> tweetUserList = new ArrayList<Follower>();
 		// foreach id we get the value
 		for (int i = 0; i < nodeList.getLength(); i++) {
@@ -152,16 +155,20 @@ public class CallInvoker {
 		System.out.println(notifications);
 	}
 
-	public static void unfollowUser(User u,int unfollowerid) {
+	public static boolean unfollowUser(User u,String unfollowerId) {
 		//http://api.twitter.com/version/notifications/follow
-
-		String unfollowUser = useService(u, "http://api.twitter.com/version/friendships/destroy.xml?user_id="+unfollowerid);
+		String unfollowUser = useService(u, "http://api.twitter.com/1/friendships/destroy.xml?screen_name="+unfollowerId, "POST");
 		System.out.println(unfollowUser);
+		Document dom = stringToDom(unfollowUser);
+		if (getXmlElement(dom,0,"screen_name").equals(unfollowerId))
+			return true;
+		 else 
+			return false;
 	}
 
 	public static void followUser(User u,int followerid) {
 		//http://api.twitter.com/version/notifications/follow
-		String followUser = useService(u, "http://api.twitter.com/version/friendships/create.xml?user_id="+followerid);
+		String followUser = useService(u, "http://api.twitter.com/1/friendships/create.xml?user_id="+followerid);
 		System.out.println(followUser);
 	}
 

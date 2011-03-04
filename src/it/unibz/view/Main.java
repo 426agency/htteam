@@ -16,7 +16,7 @@ public class Main {
 		while(true){
 		// TODO Auto-generated method stub
 System.out.println("Welcome to twitter");
-System.out.println("What do you wanna do: 1.Login 2.Logout 3.Exit 4.GetFollowing");
+System.out.println("What do you wanna do: 1.Login 2.Logout 3.Exit 4.GetFollowing 5.unfollowUser");
 //open up standard input
 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -62,6 +62,18 @@ case 4:{
 		CallInvoker.getFollowing(loggeduser);
 	}
 break;}
+case 5:{
+	User loggeduser = OAuthProducer.getOAuthAccessToken();
+	if(loggeduser==null){
+		System.out.println("You must first log in");
+		}
+	else
+	{
+		//example just printout
+		CallInvoker.unfollowUser(loggeduser, "b˜ah");
+	}
+break;}
+
 default:{System.exit(0);break;}
 		
 	}
