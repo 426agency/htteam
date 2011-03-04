@@ -108,11 +108,12 @@ public class CallInvoker {
 		ArrayList<Follower> tweetUserList = new ArrayList<Follower>();
 		// foreach id we get the value
 		for (int i = 0; i < nodeList.getLength(); i++) {
+			u=new Follower();
 			u.setId(getXmlElement(dom,i,"id")); 
 			u.setName(getFollowerInfo(user,u.getId(),"name"));
 			u.setScreenName(getFollowerInfo(user,u.getId(),"screen_name"));
 			tweetUserList.add(u);
-			u.print();
+			//u.print();
 		}
 		return tweetUserList;
 	}
