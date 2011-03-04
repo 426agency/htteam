@@ -381,37 +381,34 @@ Loginout();				}
 				}
 				if(loggeduser!=null){
 					 loginMenuItem.setText("Logout");
-						jFollowerList.setVisible(true);
-
 				}
 			}
 			else
-			{				 loginMenuItem.setText("Logout");
-			RefreshFollowing();
-			}	
+							 loginMenuItem.setText("Logout");
 		}
 		else{
 			OAuthProducer.removeAccess();
 			loggeduser=null;
 			loginMenuItem.setText("Login");
-RefreshFollowing();			
 		}
 		
-		
+		RefreshFollowing();
+
 	}
 
 	private void RefreshFollowing() {
-		if(loggeduser!=null){
-		jFollowerList.setVisible(true);
 		jFollowerList.removeAll();
+
+		if(loggeduser!=null){
 
 		ArrayList<Follower> follower = CallInvoker.getFollowing(loggeduser);
 		for(int i=0;i<follower.size();i++){
 		((DefaultListModel)jFollowerList.getModel()).add(i, follower.get(i).getScreenName());
 		}
+		jFollowerList.setVisible(true);
+
 		}
 		else{
-			jFollowerList.removeAll();
 			jFollowerList.setVisible(false);
 		}
 	}

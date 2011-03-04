@@ -93,7 +93,7 @@ provider= new DefaultOAuthProvider("http://twitter.com/oauth/request_token",
         });
 
         String pin = JOptionPane.showInputDialog(i,new JScrollPane(jep),
-        		              "NetBeans Day 2008",
+        		              "Grant Application Access",
         		             JOptionPane.PLAIN_MESSAGE);
 
        // BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
