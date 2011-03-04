@@ -136,6 +136,7 @@ public class MainGUI {
 			fileMenu = new JMenu();
 			fileMenu.setText("File");
 			fileMenu.add(getLoginMenuItem());
+			fileMenu.add(getJFollowMenuItem());
 			fileMenu.add(getExitMenuItem());
 		}
 		return fileMenu;
@@ -330,6 +331,29 @@ Loginout();				}
 	}
 
 	/**
+	 * This method initializes jFollowMenuItem	
+	 * 	
+	 * @return javax.swing.JMenuItem	
+	 */
+	private JMenuItem getJFollowMenuItem() {
+		if (jFollowMenuItem == null) {
+			jFollowMenuItem = new JMenuItem();
+			jFollowMenuItem.setText("Follow User");
+			jFollowMenuItem.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					String name = JOptionPane.showInputDialog("User to follow:");
+					if (CallInvoker.followUser(loggeduser, name)){
+					   JOptionPane.showMessageDialog(getJFrame(), "Following User " + name);	
+					} else {
+						JOptionPane.showMessageDialog(getJFrame(), "There was an error adding the user");		
+					}
+					RefreshFollowing();				}
+			});
+		}
+		return jFollowMenuItem;
+	}
+
+	/**
 	 * Launches this application
 	 */
 	public static void main(String[] args) {
@@ -341,7 +365,7 @@ Loginout();				}
 	}
 
 
-	private User loggeduser =null;
+	private User loggeduser =null;  //  @jve:decl-index=0:
 	
 	private void Loginout() {
 		if(loginMenuItem.getText().equals("Login")){
@@ -400,4 +424,6 @@ RefreshFollowing();
 
 
 	public JList jFollowerList = null;
+
+	private JMenuItem jFollowMenuItem = null;
 }

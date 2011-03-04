@@ -166,10 +166,11 @@ public class CallInvoker {
 			return false;
 	}
 
-	public static void followUser(User u,int followerid) {
+	public static boolean followUser(User u,String followerid) {
 		//http://api.twitter.com/version/notifications/follow
 		String followUser = useService(u, "http://api.twitter.com/1/friendships/create.xml?user_id="+followerid);
 		System.out.println(followUser);
+		return true;
 	}
 
 }
