@@ -106,6 +106,8 @@ provider= new DefaultOAuthProvider("http://twitter.com/oauth/request_token",
 		    properties.load(new FileInputStream("twitterclient.properties"));
 		    properties.remove("access");
 		    properties.remove("secret");
+            properties.store(new FileOutputStream("twitterclient.properties"), null);
+
 		}catch (IOException e) {
 		}
 	} 
