@@ -16,8 +16,6 @@ public class MainGUI extends JFrame
 
 	private JPanel jContentPane = null;
 
-	private JList jFollowerList = null;
-
 	private JMenuBar jJMenuBar = null;
 
 	/**
@@ -34,7 +32,7 @@ public class MainGUI extends JFrame
 	 * @return void
 	 */
 	private void initialize() {
-		this.setSize(668, 250);
+		this.setSize(668, 373);
 		this.setJMenuBar(getJJMenuBar());
 		this.setContentPane(getJContentPane());
 		this.setTitle("JFrame");
@@ -49,21 +47,8 @@ public class MainGUI extends JFrame
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BorderLayout());
-			jContentPane.add(getJFollowerList(), BorderLayout.CENTER);
 		}
 		return jContentPane;
-	}
-
-	/**
-	 * This method initializes jFollowerList	
-	 * 	
-	 * @return javax.swing.JList	
-	 */
-	private JList getJFollowerList() {
-		if (jFollowerList == null) {
-			jFollowerList = new JList();
-		}
-		return jFollowerList;
 	}
 
 	/**

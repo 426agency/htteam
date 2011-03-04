@@ -16,9 +16,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import oauth.signpost.*;
 import oauth.signpost.basic.DefaultOAuthConsumer;
 
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -29,14 +26,6 @@ import org.xml.sax.InputSource;
 public class CallInvoker {
 	private static OAuthConsumer consumer=null;
 
-	public static HttpParams getParams() {
-		// Tweak further as needed for your app
-		HttpParams params = new BasicHttpParams();
-		// set this to false, or else you'll get an
-		// Expectation Failed: error
-		HttpProtocolParams.setUseExpectContinue(params, false);
-		return params;
-	}
 
 	private static String useService(User user, String url){
 		String line = null;
@@ -63,13 +52,24 @@ public class CallInvoker {
 		}
 		return line.toString();
 	}
+	
+	private static OAuthConsumer Login(User user) {
+		// Create a new consumer using the commons implementation
+		if(consumer==null)
+		{ consumer = new DefaultOAuthConsumer("Kgrg9GlpGU8yoza6u1KqQQ","bZUrgRsSWu9JiXMsE9mFFT5pcosZzPv4vKca7nhZsE");
+		consumer.setTokenWithSecret(user.getAccesstoken(),
+		user.getTokensecret());}
+
+		return consumer;
+		}
+
+
 
 	// Your actual method might look like this:
 	public static void getTweets(User user) {
 		
 		try {
 			OAuthConsumer consumer = Login(user);
-
 			URL uu = new URL("http://twitter.com/statuses/friends_timeline.xml?count=200");
 			// create an HTTP request to a protected resource
 			HttpURLConnection request =  (HttpURLConnection)uu.openConnection();
@@ -98,18 +98,7 @@ public class CallInvoker {
 	}
 
 
-	private static OAuthConsumer Login(User user) {
-		// Create a new consumer using the commons implementation
-		if(consumer==null)
-		{ consumer = new DefaultOAuthConsumer("Kgrg9GlpGU8yoza6u1KqQQ","bZUrgRsSWu9JiXMsE9mFFT5pcosZzPv4vKca7nhZsE");
-		consumer.setTokenWithSecret(user.getUserAccessToken(),
-				user.getUserTokenSecret());}
-
-		return consumer;
-	}
-
-
-
+	
 	public static ArrayList<Follower> getFollowing(User user) {
 		//http://api.twitter.com/version/notifications/follow
 		String followersId = useService(user, "http://api.twitter.com/1/followers/ids.xml");
