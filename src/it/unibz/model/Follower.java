@@ -1,18 +1,18 @@
 package it.unibz.model;
 
-public class TweetUser {
+public class Follower {
 
 	private String id;
 	private String name;
 	private String screenName;
 	
-	public TweetUser (){
+	public Follower (){
 		this.id = null;
 		this.name = null;
 		this.screenName = null;
 	}
 	
-	public TweetUser (String id, String name, String screenName){
+	public Follower (String id, String name, String screenName){
 		this.id = id;
 		this.name = name;
 		this.screenName = screenName;

@@ -1,6 +1,6 @@
 package it.unibz.utils;
 
-import it.unibz.model.TweetUser;
+import it.unibz.model.Follower;
 import it.unibz.model.User;
 
 import java.io.BufferedReader;
@@ -26,7 +26,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 
-public class Tweetproducer {
+public class CallInvoker {
 	private static OAuthConsumer consumer=null;
 
 	public static HttpParams getParams() {
@@ -110,13 +110,13 @@ public class Tweetproducer {
 
 
 
-	public static ArrayList<TweetUser> getFollowing(User user) {
+	public static ArrayList<Follower> getFollowing(User user) {
 		//http://api.twitter.com/version/notifications/follow
 		String followersId = useService(user, "http://api.twitter.com/1/followers/ids.xml");
 		Document dom = stringToDom(followersId);
 		NodeList nodeList = dom.getElementsByTagName("id");
-		TweetUser u = new TweetUser();
-		ArrayList<TweetUser> tweetUserList = new ArrayList<TweetUser>();
+		Follower u = new Follower();
+		ArrayList<Follower> tweetUserList = new ArrayList<Follower>();
 		// foreach id we get the value
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			u.setId(getXmlElement(dom,i,"id")); 

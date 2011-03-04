@@ -1,6 +1,8 @@
 package it.unibz.view;
 
 import it.unibz.model.User;
+import it.unibz.utils.CallInvoker;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +16,7 @@ public class Main {
 		while(true){
 		// TODO Auto-generated method stub
 System.out.println("Welcome to twitter");
-System.out.println("What do you wanna do: 1.Login 2.Logout 3.Exit");
+System.out.println("What do you wanna do: 1.Login 2.Logout 3.Exit 4.GetFollowing");
 //open up standard input
 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -25,7 +27,9 @@ try {
    System.out.println("IO error trying to read action!");
    System.exit(1);
 }
-if(action.equals("1")){
+
+switch(Integer.parseInt(action)){
+case 1:{
 	User loggeduser = OAuthProducer.getOAuthAccessToken();
 	if(loggeduser==null){
 		//Start pin procedure
@@ -43,17 +47,25 @@ if(action.equals("1")){
 		
 			System.out.println("Successfully logged in");
 	}
-}
-else{
-	if(action.equals("2")){
-		OAuthProducer.removeAccess();
-		System.out.println("Successfully logged out");
-
-	}else{
-	System.exit(0);
-}}
+	break;}
+case 2:{OAuthProducer.removeAccess();
+System.out.println("Successfully logged out");
+break;}
+case 4:{
+	User loggeduser = OAuthProducer.getOAuthAccessToken();
+	if(loggeduser==null){
+		System.out.println("You must first log in");
 		}
-
+	else
+	{
+		//example just printout
+		CallInvoker.getFollowing(loggeduser);
+	}
+break;}
+default:{System.exit(0);break;}
+		
+	}
+		}
 	}
 
 }
