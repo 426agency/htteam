@@ -155,22 +155,24 @@ public class CallInvoker {
 		System.out.println(notifications);
 	}
 
-	public static boolean unfollowUser(User u,String unfollowerId) {
+	public static boolean unfollowUser(User u,String unfollowerScreen) {
 		//http://api.twitter.com/version/notifications/follow
-		String unfollowUser = useService(u, "http://api.twitter.com/1/friendships/destroy.xml?screen_name="+unfollowerId, "POST");
-		System.out.println(unfollowUser);
+		String unfollowUser = useService(u, "http://api.twitter.com/1/friendships/destroy.xml?screen_name="+unfollowerScreen, "POST");
 		Document dom = stringToDom(unfollowUser);
-		if (getXmlElement(dom,0,"screen_name").equals(unfollowerId))
+		if (getXmlElement(dom,0,"screen_name").equals(unfollowerScreen))
 			return true;
 		 else 
 			return false;
 	}
 
-	public static boolean followUser(User u,String followerid) {
+	public static boolean followUser(User u,String followerScreen) {
 		//http://api.twitter.com/version/notifications/follow
-		String followUser = useService(u, "http://api.twitter.com/1/friendships/create.xml?user_id="+followerid);
-		System.out.println(followUser);
-		return true;
+		String followUser = useService(u, "http://api.twitter.com/1/friendships/create.xml?screen_name="+followerScreen,"POST");
+		Document dom = stringToDom(followUser);
+		if (getXmlElement(dom,0,"screen_name").equals(followerScreen))
+			return true;
+		 else 
+			return false;
 	}
 
 }
