@@ -12,6 +12,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -267,6 +270,55 @@ Loginout();				}
 			DefaultListModel model = new DefaultListModel();
 
 			jFollowerList = new JList(model);
+			jFollowerList.addMouseListener(new MouseListener() {
+				
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					//mousePressed (arg0); // cheesy hack. 					
+				}
+				
+				@Override
+				public void mousePressed(MouseEvent arg0) {
+					if (arg0.getButton() == MouseEvent.BUTTON3) {
+						int idx = jFollowerList.locationToIndex(arg0.getPoint());
+						jFollowerList.setSelectedIndex(idx);
+						
+						JPopupMenu contextMenu = new JPopupMenu();
+												
+							//contextMenu.add("Unfollow User");
+						JMenuItem mi = new JMenuItem("Unfollow User");
+						mi.addActionListener(new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent arg0) {
+JOptionPane.showMessageDialog(getJFrame(), "FAKE User Unfollowed");								
+							}
+						});
+						contextMenu.add(mi);
+							contextMenu.show (arg0.getComponent(), arg0.getX (), arg0.getY ());
+							
+						//contextMenu.setVisible(true);
+					}			
+				}
+				
+				@Override
+				public void mouseExited(MouseEvent arg0) {
+					
+					
+				}
+				
+				@Override
+				public void mouseEntered(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		}
 		return jFollowerList;
 	}
@@ -318,12 +370,15 @@ RefreshFollowing();
 	private void RefreshFollowing() {
 		if(loggeduser!=null){
 		jFollowerList.setVisible(true);
+		jFollowerList.removeAll();
+
 		ArrayList<Follower> follower = CallInvoker.getFollowing(loggeduser);
 		for(int i=0;i<follower.size();i++){
 		((DefaultListModel)jFollowerList.getModel()).add(i, follower.get(i).getScreenName());
 		}
 		}
 		else{
+			jFollowerList.removeAll();
 			jFollowerList.setVisible(false);
 		}
 	}
@@ -337,7 +392,6 @@ RefreshFollowing();
 		
 	}
 
-	private JComponent newContentPane = null;
 
 	public JList jFollowerList = null;
 }
