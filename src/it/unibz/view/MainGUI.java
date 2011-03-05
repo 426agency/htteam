@@ -397,13 +397,13 @@ Loginout();				}
 	}
 
 	private void RefreshFollowing() {
-		jFollowerList.removeAll();
+		((DefaultListModel)jFollowerList.getModel()).removeAllElements();
 
 		if(loggeduser!=null){
 
 		ArrayList<Follower> follower = CallInvoker.getFollowing(loggeduser);
 		for(int i=0;i<follower.size();i++){
-		((DefaultListModel)jFollowerList.getModel()).add(i, follower.get(i).getScreenName());
+			((DefaultListModel)jFollowerList.getModel()).add(i, follower.get(i).getScreenName());
 		}
 		jFollowerList.setVisible(true);
 
