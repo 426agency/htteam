@@ -26,22 +26,19 @@ import org.xml.sax.InputSource;
 public class CallInvoker {
 	private static OAuthConsumer consumer=null;
 
-	
 	private static String useService(User user, String url){
 		return useService(user, url, "GET");
 	}
 
-	private static String useService(User user, String url, String method){
+	private static String useService(User user, String url, String requestMethod){
 		String line = null;
 		try {
 			OAuthConsumer consumer = Login(user);
 			URL uu = new URL(url);
-			// create an HTTP request to a protected resource
 			HttpURLConnection request =  (HttpURLConnection)uu.openConnection();
-			request.setRequestMethod(method);
+			request.setRequestMethod(requestMethod);
 			request.setDoOutput(true);
 			request.setReadTimeout(10000);
-			// sign the request
 			consumer.sign(request);
 			BufferedReader rd  = new BufferedReader(new InputStreamReader(request.getInputStream()));
 			StringBuilder sb = new StringBuilder();
@@ -49,59 +46,35 @@ public class CallInvoker {
 			while ((line = rd.readLine()) != null){
 				sb.append(line + '\n');
 			}
+
 			line = sb.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return line.toString();
 	}
-	
+
 	private static OAuthConsumer Login(User user) {
 		// Create a new consumer using the commons implementation
 		if(consumer==null)
 		{ consumer = new DefaultOAuthConsumer("Kgrg9GlpGU8yoza6u1KqQQ","bZUrgRsSWu9JiXMsE9mFFT5pcosZzPv4vKca7nhZsE");
 		consumer.setTokenWithSecret(user.getAccesstoken(),
-		user.getTokensecret());}
+				user.getTokensecret());}
 
 		return consumer;
-		}
-
-
-
-	// Your actual method might look like this:
-	public static void getTweets(User user) {
-		
-		try {
-			OAuthConsumer consumer = Login(user);
-			URL uu = new URL("http://twitter.com/statuses/friends_timeline.xml?count=200");
-			// create an HTTP request to a protected resource
-			HttpURLConnection request =  (HttpURLConnection)uu.openConnection();
-			request.setRequestMethod("GET");
-			request.setDoOutput(true);
-			request.setReadTimeout(10000);
-
-			//request.connect();
-			// sign the request
-			consumer.sign(request);
-			BufferedReader rd  = new BufferedReader(new InputStreamReader(request.getInputStream()));
-			StringBuilder sb = new StringBuilder();
-
-			String line;
-			while ((line = rd.readLine()) != null){
-				sb.append(line + '\n');
-			}
-
-			System.out.println(sb.toString());
-			// send the request
-
-		} catch (Exception e) {
-			// do some proper exception handling here
-			e.printStackTrace();
-		}
 	}
 
+	public static ArrayList<String> getTweets(User user) {
+		String tweets = useService(user, "http://twitter.com/statuses/friends_timeline.xml?count=200");
+		Document dom = stringToDom(tweets);
+		NodeList nodeList = dom.getElementsByTagName("status");
+		ArrayList<String> ret = new ArrayList<String>();
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			ret.add(getXmlElement(dom,i,"text"));
+		}
+		return ret;
+	}
 
-	
 	public static ArrayList<Follower> getFollowing(User user) {
 		//http://api.twitter.com/version/notifications/follow
 		String followersId = useService(user, "http://api.twitter.com/1/friends/ids.xml");
@@ -129,7 +102,7 @@ public class CallInvoker {
 			return "na";
 		else return idNodeList.item(0).getNodeValue().toString();
 	}
-	
+
 	private static Document stringToDom(String s){
 		Document d = null;
 		try {
@@ -150,8 +123,7 @@ public class CallInvoker {
 
 	public static void getNotifications(User u) {
 		//http://api.twitter.com/version/notifications/follow
-		
-		String notifications = useService(u, "http://api.twitter.com/1/notifications/follow.xml");
+		String notifications = useService(u, "http://api.twitter.com/1/notifications/follow.xml","POST");
 		System.out.println(notifications);
 	}
 
@@ -161,7 +133,7 @@ public class CallInvoker {
 		Document dom = stringToDom(unfollowUser);
 		if (getXmlElement(dom,0,"screen_name").equals(unfollowerScreen))
 			return true;
-		 else 
+		else 
 			return false;
 	}
 
@@ -171,7 +143,7 @@ public class CallInvoker {
 		Document dom = stringToDom(followUser);
 		if (getXmlElement(dom,0,"screen_name").equals(followerScreen))
 			return true;
-		 else 
+		else 
 			return false;
 	}
 
