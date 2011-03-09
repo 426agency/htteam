@@ -380,7 +380,7 @@ Loginout();				}
 	private JMenuItem getJTweetMenuItem() {
 		if (jTweetMenuItem == null) {
 			jTweetMenuItem = new JMenuItem();
-			jTweetMenuItem.setText("Follow User");
+			jTweetMenuItem.setText("Tweet message");
 			jTweetMenuItem.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					if(loggeduser!=null){
