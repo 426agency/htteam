@@ -154,8 +154,8 @@ public class CallInvoker {
 			return false;
 	}
 	
-	public static void updateUser(User u) {
-		useService(u, "http://api.twitter.com/1/statuses/update.xml","POST");
+	public static void updateUser(User u, String status) {
+		String uptadeStatus = useService(u, "http://api.twitter.com/1/statuses/update.xml?status=\""+status+"\"","POST");
 	}
 
 }
