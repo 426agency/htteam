@@ -121,14 +121,18 @@ public class CallInvoker {
 		return getXmlElement(dom,0,tag);
 	}
 
-	public static void getNotifications(User u) {
-		//http://api.twitter.com/version/notifications/follow
-		String notifications = useService(u, "http://api.twitter.com/1/notifications/follow.xml","POST");
-		System.out.println(notifications);
+	public static ArrayList<String> getNotifications(User u) {
+		String notifications = useService(u, "http://api.twitter.com/1/statuses/home_timeline.xml");
+		Document dom = stringToDom(notifications);
+		NodeList nodeList = dom.getElementsByTagName("status");
+		ArrayList<String> ret = new ArrayList<String>();
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			ret.add(getXmlElement(dom,i,"text"));
+		}
+		return ret;
 	}
 
 	public static boolean unfollowUser(User u,String unfollowerScreen) {
-		//http://api.twitter.com/version/notifications/follow
 		String unfollowUser = useService(u, "http://api.twitter.com/1/friendships/destroy.xml?screen_name="+unfollowerScreen, "POST");
 		Document dom = stringToDom(unfollowUser);
 		if (getXmlElement(dom,0,"screen_name").equals(unfollowerScreen))

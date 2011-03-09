@@ -16,7 +16,7 @@ public class Main {
 		while(true){
 		// TODO Auto-generated method stub
 System.out.println("Welcome to twitter");
-System.out.println("What do you wanna do: 1.Login 2.Logout 3.Exit 4.GetFollowing 5.unfollowUser");
+System.out.println("What do you wanna do: 1.Login 2.Logout 3.Exit 4.GetFollowing 5.boh");
 //open up standard input
 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -70,7 +70,7 @@ case 5:{
 	else
 	{
 		//example just printout
-		CallInvoker.unfollowUser(loggeduser, "b˜ah");
+		CallInvoker.getTweets(loggeduser);
 	}
 break;}
 
