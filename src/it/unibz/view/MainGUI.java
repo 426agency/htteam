@@ -382,14 +382,11 @@ Loginout();				}
 			jTweetMenuItem.setText("Follow User");
 			jTweetMenuItem.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
+					if(loggeduser!=null){
 					String name = JOptionPane.showInputDialog("Message to tweet:");
-					if (CallInvoker.tweet(name)){
-					   JOptionPane.showMessageDialog(getJFrame(), "Tweeted!");	
-					} else {
-						JOptionPane.showMessageDialog(getJFrame(), "There was an error while tweeting");		
+					CallInvoker.updateUser(loggeduser,name);
 					}
-					RefreshFollowing();	
-					RefreshTweets();}
+				}
 			});
 		}
 		return jTweetMenuItem;
