@@ -141,6 +141,7 @@ public class MainGUI {
 			fileMenu = new JMenu();
 			fileMenu.setText("File");
 			fileMenu.add(getLoginMenuItem());
+			fileMenu.add(getJTweetMenuItem());
 			fileMenu.add(getJFollowMenuItem());
 			fileMenu.add(getExitMenuItem());
 		}
