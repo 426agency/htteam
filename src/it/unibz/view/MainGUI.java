@@ -17,6 +17,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
@@ -44,6 +46,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.JCheckBox;
 import java.awt.Dimension;
 import javax.swing.JList;
+import javax.swing.JSplitPane;
 
 /**
  * This class is the initialization of our program. It is in great part
@@ -108,7 +111,8 @@ public class MainGUI {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BorderLayout());
-			jContentPane.add(getJFollowerList(), BorderLayout.CENTER);
+			jContentPane.add(getJFollowerList(), BorderLayout.NORTH);
+			jContentPane.add(getJTweetList(), BorderLayout.SOUTH);
 		}
 		return jContentPane;
 	}
@@ -260,7 +264,20 @@ Loginout();				}
 		return loginMenuItem;
 	}
 
+	/**
+	 * This method initializes jFollowerList	
+	 * 	
+	 * @return javax.swing.JList	
+	 */
+	private JList getJTweetList() {
+		if (jTweetList == null) {
 
+			jTweetList = new JList();
+			jTweetList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			
+		}
+		return jTweetList;
+	}
 
 	/**
 	 * This method initializes jFollowerList	
@@ -301,6 +318,7 @@ Loginout();				}
 									JOptionPane.showMessageDialog(getJFrame(), "There was an error...");		
 								}
 								RefreshFollowing();
+								RefreshTweets();
 							}
 						});
 						contextMenu.add(mi);
@@ -331,6 +349,8 @@ Loginout();				}
 		}
 		return jFollowerList;
 	}
+	
+	
 
 	/**
 	 * This method initializes jFollowMenuItem	
@@ -349,12 +369,44 @@ Loginout();				}
 					} else {
 						JOptionPane.showMessageDialog(getJFrame(), "There was an error adding the user");		
 					}
-					RefreshFollowing();				}
+					RefreshFollowing();	
+					RefreshTweets();}
 			});
 		}
 		return jFollowMenuItem;
 	}
 
+	private JMenuItem getJTweetMenuItem() {
+		if (jTweetMenuItem == null) {
+			jTweetMenuItem = new JMenuItem();
+			jTweetMenuItem.setText("Follow User");
+			jTweetMenuItem.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					String name = JOptionPane.showInputDialog("Message to tweet:");
+					if (CallInvoker.tweet(name)){
+					   JOptionPane.showMessageDialog(getJFrame(), "Tweeted!");	
+					} else {
+						JOptionPane.showMessageDialog(getJFrame(), "There was an error while tweeting");		
+					}
+					RefreshFollowing();	
+					RefreshTweets();}
+			});
+		}
+		return jTweetMenuItem;
+	}
+
+	
+	public class MyTask extends TimerTask{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			RefreshFollowing();
+			RefreshTweets();
+		}
+		
+	}
+	
 	/**
 	 * Launches this application
 	 */
@@ -363,7 +415,15 @@ Loginout();				}
 				MainGUI application = new MainGUI();
 				application.getJFrame().setVisible(true);
 				application.Loginout();
+				Timer timer = new Timer();
+				TimerTask task = application.new MyTask();
 
+				// aspetta 100 secondi prima dell'esecuzione
+				//timer.schedule( task, 100000 );
+
+				// aspetta 5 secondi prima dell'esecuzione,poi
+				// viene eseguita ogni 100 secondi
+				timer.schedule( task, 100000, 100000 ); 
 	}
 
 
@@ -393,6 +453,7 @@ Loginout();				}
 		}
 		
 		RefreshFollowing();
+		RefreshTweets();
 
 	}
 
@@ -413,6 +474,20 @@ Loginout();				}
 		}
 	}
 
+	private void RefreshTweets() {
+		jTweetList.removeAll();
+	jTweetList.setListData(new String[]{"a","b","c"});
+		if(loggeduser!=null){
+
+//		Vector<String> tweet = CallInvoker.getTweets(loggeduser);
+//		if(tweet!=null)
+//		jTweetList.setListData(tweet);
+
+		}
+		else{
+			jFollowerList.setVisible(false);
+		}
+	}
 	/**
 	 * Method used to update the visual controls
 	 */
@@ -422,8 +497,9 @@ Loginout();				}
 		
 	}
 
-
+	public JList jTweetList = null;
 	public JList jFollowerList = null;
 
 	private JMenuItem jFollowMenuItem = null;
+	private JMenuItem jTweetMenuItem = null;
 }

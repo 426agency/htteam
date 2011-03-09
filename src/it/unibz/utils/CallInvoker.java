@@ -49,6 +49,8 @@ public class CallInvoker {
 			}
 
 			line = sb.toString();
+			request.disconnect();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -66,7 +68,7 @@ public class CallInvoker {
 	}
 
 	public static Vector<String> getTweets(User user) {
-		String tweets = useService(user, "http://twitter.com/statuses/friends_timeline.xml?count=200");
+		String tweets = useService(user, "http://api.twitter.com/1/statuses/home_timeline.xml");
 		Document dom = stringToDom(tweets);
 		NodeList nodeList = dom.getElementsByTagName("status");
 		Vector<String> ret = new Vector<String>();
