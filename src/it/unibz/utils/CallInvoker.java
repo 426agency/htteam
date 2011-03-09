@@ -153,6 +153,10 @@ public class CallInvoker {
 		else 
 			return false;
 	}
+	
+	public static void updateUser(User u) {
+		useService(u, "http://api.twitter.com/1/statuses/update.xml","POST");
+	}
 
 }
 
