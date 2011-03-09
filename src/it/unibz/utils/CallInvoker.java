@@ -9,6 +9,7 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -64,11 +65,11 @@ public class CallInvoker {
 		return consumer;
 	}
 
-	public static ArrayList<String> getTweets(User user) {
+	public static Vector<String> getTweets(User user) {
 		String tweets = useService(user, "http://twitter.com/statuses/friends_timeline.xml?count=200");
 		Document dom = stringToDom(tweets);
 		NodeList nodeList = dom.getElementsByTagName("status");
-		ArrayList<String> ret = new ArrayList<String>();
+		Vector<String> ret = new Vector<String>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			ret.add(getXmlElement(dom,i,"text"));
 		}
@@ -121,11 +122,11 @@ public class CallInvoker {
 		return getXmlElement(dom,0,tag);
 	}
 
-	public static ArrayList<String> getNotifications(User u) {
+	public static Vector<String> getNotifications(User u) {
 		String notifications = useService(u, "http://api.twitter.com/1/statuses/home_timeline.xml");
 		Document dom = stringToDom(notifications);
 		NodeList nodeList = dom.getElementsByTagName("status");
-		ArrayList<String> ret = new ArrayList<String>();
+		Vector<String> ret = new Vector<String>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			ret.add(getXmlElement(dom,i,"text"));
 		}
