@@ -47,6 +47,7 @@ import javax.swing.JCheckBox;
 import java.awt.Dimension;
 import javax.swing.JList;
 import javax.swing.JSplitPane;
+import java.awt.GridBagLayout;
 
 /**
  * This class is the initialization of our program. It is in great part
@@ -111,8 +112,7 @@ public class MainGUI {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BorderLayout());
-			jContentPane.add(getJFollowerList(), BorderLayout.NORTH);
-			jContentPane.add(getJTweetList(), BorderLayout.SOUTH);
+			jContentPane.add(getJSplitPane(), BorderLayout.CENTER);
 		}
 		return jContentPane;
 	}
@@ -384,8 +384,8 @@ Loginout();				}
 			jTweetMenuItem.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					if(loggeduser!=null){
-					String name = JOptionPane.showInputDialog("Message to tweet:");
-					CallInvoker.updateUser(loggeduser,name);
+					//String name = JOptionPane.showInputDialog("Message to tweet:");
+					//CallInvoker.updateUser(loggeduser,name);
 					}
 				}
 			});
@@ -405,6 +405,47 @@ Loginout();				}
 		
 	}
 	
+	/**
+	 * This method initializes jScrollPane	
+	 * 	
+	 * @return javax.swing.JScrollPane	
+	 */
+	private JScrollPane getJScrollPane() {
+		if (jScrollPane == null) {
+			jScrollPane = new JScrollPane();
+			jScrollPane.setViewportView(getJFollowerList());
+		}
+		return jScrollPane;
+	}
+
+	/**
+	 * This method initializes jSplitPane	
+	 * 	
+	 * @return javax.swing.JSplitPane	
+	 */
+	private JSplitPane getJSplitPane() {
+		if (jSplitPane == null) {
+			jSplitPane = new JSplitPane();
+			jSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+			jSplitPane.setBottomComponent(getJBottomScrollPane());
+			jSplitPane.setTopComponent(getJScrollPane());
+		}
+		return jSplitPane;
+	}
+
+	/**
+	 * This method initializes jBottomScrollPane	
+	 * 	
+	 * @return javax.swing.JScrollPane	
+	 */
+	private JScrollPane getJBottomScrollPane() {
+		if (jBottomScrollPane == null) {
+			jBottomScrollPane = new JScrollPane();
+			jBottomScrollPane.setViewportView(getJTweetList());
+		}
+		return jBottomScrollPane;
+	}
+
 	/**
 	 * Launches this application
 	 */
@@ -500,4 +541,10 @@ Loginout();				}
 
 	private JMenuItem jFollowMenuItem = null;
 	private JMenuItem jTweetMenuItem = null;
+
+	private JScrollPane jScrollPane = null;
+
+	private JSplitPane jSplitPane = null;
+
+	private JScrollPane jBottomScrollPane = null;
 }
