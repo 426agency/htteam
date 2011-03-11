@@ -474,12 +474,12 @@ Loginout();				}
 
 	private void RefreshTweets() {
 		jTweetList.removeAll();
-	jTweetList.setListData(new String[]{"a","b","c"});
+	//jTweetList.setListData(new String[]{"a","b","c"});
 		if(loggeduser!=null){
 
-//		Vector<String> tweet = CallInvoker.getTweets(loggeduser);
-//		if(tweet!=null)
-//		jTweetList.setListData(tweet);
+		Vector<String> tweet = CallInvoker.getTweets(loggeduser);
+		if(tweet!=null)
+			jTweetList.setListData(tweet);
 
 		}
 		else{

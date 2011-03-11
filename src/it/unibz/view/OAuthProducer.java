@@ -123,7 +123,7 @@ provider= new DefaultOAuthProvider("http://twitter.com/oauth/request_token",
      // Write properties file.
         try {
         	properties.setProperty("access", consumer.getToken());
-        	properties.setProperty("secret", consumer.getConsumerSecret());
+        	properties.setProperty("secret", consumer.getTokenSecret());
             properties.store(new FileOutputStream("twitterclient.properties"), null);
         } catch (IOException e) {
         }

@@ -7,7 +7,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -68,7 +70,7 @@ public class CallInvoker {
 	}
 
 	public static Vector<String> getTweets(User user) {
-		String tweets = useService(user, "http://api.twitter.com/1/statuses/home_timeline.xml");
+		String tweets = useService(user, "http://api.twitter.com/1/statuses/public_timeline.xml");
 		Document dom = stringToDom(tweets);
 		NodeList nodeList = dom.getElementsByTagName("status");
 		Vector<String> ret = new Vector<String>();
@@ -145,6 +147,7 @@ public class CallInvoker {
 	}
 
 	public static boolean followUser(User u,String followerScreen) {
+		
 		//http://api.twitter.com/version/notifications/follow
 		String followUser = useService(u, "http://api.twitter.com/1/friendships/create.xml?screen_name="+followerScreen,"POST");
 		Document dom = stringToDom(followUser);
@@ -155,7 +158,7 @@ public class CallInvoker {
 	}
 	
 	public static void updateUser(User u, String status) {
-		String uptadeStatus = useService(u, "http://api.twitter.com/1/statuses/update.xml?status=\""+status+"\"","POST");
+		String uptadeStatus = useService(u, "http://api.twitter.com/1/statuses/update.xml?status="+status,"POST");
 	}
 
 }
