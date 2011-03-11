@@ -421,7 +421,7 @@ Loginout();				}
 
 				// aspetta 5 secondi prima dell'esecuzione,poi
 				// viene eseguita ogni 100 secondi
-				timer.schedule( task, 100000, 100000 ); 
+				timer.schedule( task, 1000000, 1000000 ); 
 	}
 
 

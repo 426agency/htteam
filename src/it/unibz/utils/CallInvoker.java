@@ -6,6 +6,7 @@ import it.unibz.model.User;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -158,7 +159,14 @@ public class CallInvoker {
 	}
 	
 	public static void updateUser(User u, String status) {
-		String uptadeStatus = useService(u, "http://api.twitter.com/1/statuses/update.xml?status="+status,"POST");
+		String encodedData=null;
+		try {
+			encodedData = URLEncoder.encode(status, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String uptadeStatus = useService(u, "http://api.twitter.com/1/statuses/update.xml?status="+encodedData,"POST");
 	}
 
 }

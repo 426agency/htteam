@@ -19,6 +19,10 @@ public class User {
 	public String getTokensecret() {
 		return tokensecret;
 	}
+	
+	public void print(){
+		System.out.println(accesstoken+" "+tokensecret);
+	}
 
 //	public String getUserAccessToken() {
 //		// TODO Auto-generated method stub
