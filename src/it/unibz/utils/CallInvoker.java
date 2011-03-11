@@ -53,7 +53,7 @@ public class CallInvoker {
 
 			line = sb.toString();
 			request.disconnect();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -62,11 +62,10 @@ public class CallInvoker {
 
 	private static OAuthConsumer Login(User user) {
 		// Create a new consumer using the commons implementation
-		if(consumer==null)
-		{ consumer = new DefaultOAuthConsumer("Kgrg9GlpGU8yoza6u1KqQQ","bZUrgRsSWu9JiXMsE9mFFT5pcosZzPv4vKca7nhZsE");
-		consumer.setTokenWithSecret(user.getAccesstoken(),
-				user.getTokensecret());}
-
+		if(consumer==null){ 
+			consumer = new DefaultOAuthConsumer("Kgrg9GlpGU8yoza6u1KqQQ","bZUrgRsSWu9JiXMsE9mFFT5pcosZzPv4vKca7nhZsE");
+			consumer.setTokenWithSecret(user.getAccesstoken(), user.getTokensecret());
+		}
 		return consumer;
 	}
 
@@ -148,8 +147,6 @@ public class CallInvoker {
 	}
 
 	public static boolean followUser(User u,String followerScreen) {
-		
-		//http://api.twitter.com/version/notifications/follow
 		String followUser = useService(u, "http://api.twitter.com/1/friendships/create.xml?screen_name="+followerScreen,"POST");
 		Document dom = stringToDom(followUser);
 		if (getXmlElement(dom,0,"screen_name").equals(followerScreen))
@@ -157,7 +154,7 @@ public class CallInvoker {
 		else 
 			return false;
 	}
-	
+
 	public static void updateUser(User u, String status) {
 		String encodedData=null;
 		try {
