@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -29,6 +28,9 @@ import org.xml.sax.InputSource;
 
 public class CallInvoker {
 	private static OAuthConsumer consumer=null;
+	private static Vector<String> ret = null;
+	private static int not = 0;
+
 
 	private static String useService(User user, String url){
 		return useService(user, url, "GET");
@@ -73,9 +75,15 @@ public class CallInvoker {
 		String tweets = useService(user, "http://api.twitter.com/1/statuses/home_timeline.xml?count=20");
 		Document dom = stringToDom(tweets);
 		NodeList nodeList = dom.getElementsByTagName("status");
-		Vector<String> ret = new Vector<String>();
+		if (ret == null) ret = new Vector<String>();
+		String temp;
+		not=0;
 		for (int i = 0; i < nodeList.getLength(); i++) {
-			ret.add(getXmlElement(dom,i,"screen_name")+": "+getXmlElement(dom,i,"text"));
+			temp = getXmlElement(dom,i,"screen_name")+": "+getXmlElement(dom,i,"text");
+			if (!ret.contains(temp)){
+			  ret.add(temp);
+			  not++;
+			}
 		}
 		return ret;
 	}
@@ -94,7 +102,6 @@ public class CallInvoker {
 			u.setName(getFollowerInfo(user,u.getId(),"name"));
 			u.setScreenName(getFollowerInfo(user,u.getId(),"screen_name"));
 			tweetUserList.add(u);
-			//u.print();
 		}
 		return tweetUserList;
 	}
@@ -126,15 +133,8 @@ public class CallInvoker {
 		return getXmlElement(dom,0,tag);
 	}
 
-	public static Vector<String> getNotifications(User u) {
-		String notifications = useService(u, "http://api.twitter.com/1/statuses/home_timeline.xml");
-		Document dom = stringToDom(notifications);
-		NodeList nodeList = dom.getElementsByTagName("status");
-		Vector<String> ret = new Vector<String>();
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			ret.add(getXmlElement(dom,i,"text"));
-		}
-		return ret;
+	public static int getNotifications() {
+		return not;
 	}
 
 	public static boolean unfollowUser(User u,String unfollowerScreen) {
@@ -163,7 +163,7 @@ public class CallInvoker {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String uptadeStatus = useService(u, "http://api.twitter.com/1/statuses/update.xml?status="+encodedData,"POST");
+		useService(u, "http://api.twitter.com/1/statuses/update.xml?status="+encodedData,"POST");
 	}
 
 }

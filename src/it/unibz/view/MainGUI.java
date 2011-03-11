@@ -8,24 +8,17 @@ import it.unibz.utils.CallInvoker;
 import java.awt.BorderLayout;
 import java.awt.Event;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,19 +28,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.JCheckBox;
-import java.awt.Dimension;
 import javax.swing.JList;
 import javax.swing.JSplitPane;
-import java.awt.GridBagLayout;
 
 /**
  * This class is the initialization of our program. It is in great part
@@ -57,29 +43,24 @@ import java.awt.GridBagLayout;
 public class MainGUI {
 
 	private JFrame jFrame = null; // @jve:decl-index=0:visual-constraint="10,10"
-
 	private JPanel jContentPane = null;
-
 	private JMenuBar jJMenuBar = null;
-
 	private JMenu fileMenu = null;
 	public static final String NUMERIC = "0123456789";
-
 	private JMenu helpMenu = null;
-
 	private JMenuItem exitMenuItem = null;
-
 	private JMenuItem aboutMenuItem = null;
-
 	public JMenuItem loginMenuItem = null;
-
 	private JDialog aboutDialog = null;
-
 	private JPanel aboutContentPane = null;
-
 	private JLabel aboutVersionLabel = null;
-
-	private JTextField jEpsilonTextField = null;
+	public JList jTweetList = null;
+	public JList jFollowerList = null;
+	private JMenuItem jFollowMenuItem = null;
+	private JMenuItem jTweetMenuItem = null;
+	private JScrollPane jScrollPane = null;
+	private JSplitPane jSplitPane = null;
+	private JScrollPane jBottomScrollPane = null;
 
 	/**
 	 * This method initializes the jFrame, the general graphical container of
@@ -463,7 +444,7 @@ Loginout();				}
 
 				// aspetta 5 secondi prima dell'esecuzione,poi
 				// viene eseguita ogni 100 secondi
-				timer.schedule( task, 1000000, 1000000 ); 
+				timer.schedule( task, 100000, 100000 ); 
 	}
 
 
@@ -532,6 +513,9 @@ Loginout();				}
 			jTweetList.setVisible(false);
 		}
 		jContentPane.validate();
+		int tweets=CallInvoker.getNotifications();
+		if(tweets>0)
+		JOptionPane.showMessageDialog(getJFrame(), "You have "+tweets+" new Tweets!");
 	}
 	/**
 	 * Method used to update the visual controls
@@ -541,16 +525,4 @@ Loginout();				}
 		
 		
 	}
-
-	public JList jTweetList = null;
-	public JList jFollowerList = null;
-
-	private JMenuItem jFollowMenuItem = null;
-	private JMenuItem jTweetMenuItem = null;
-
-	private JScrollPane jScrollPane = null;
-
-	private JSplitPane jSplitPane = null;
-
-	private JScrollPane jBottomScrollPane = null;
 }

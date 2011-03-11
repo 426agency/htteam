@@ -70,7 +70,7 @@ case 5:{
 	else
 	{
 		//example just printout
-		CallInvoker.getNotifications(loggeduser);
+		//CallInvoker.getNotifications(loggeduser);
 	}
 break;}
 
