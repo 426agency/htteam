@@ -70,12 +70,12 @@ public class CallInvoker {
 	}
 
 	public static Vector<String> getTweets(User user) {
-		String tweets = useService(user, "http://api.twitter.com/1/statuses/public_timeline.xml");
+		String tweets = useService(user, "http://api.twitter.com/1/statuses/home_timeline.xml?count=20");
 		Document dom = stringToDom(tweets);
 		NodeList nodeList = dom.getElementsByTagName("status");
 		Vector<String> ret = new Vector<String>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
-			ret.add(getXmlElement(dom,i,"text"));
+			ret.add(getXmlElement(dom,i,"screen_name")+": "+getXmlElement(dom,i,"text"));
 		}
 		return ret;
 	}

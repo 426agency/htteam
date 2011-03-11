@@ -272,8 +272,9 @@ Loginout();				}
 	 */
 	private JList getJTweetList() {
 		if (jTweetList == null) {
+			DefaultListModel model = new DefaultListModel();
 
-			jTweetList = new JList();
+			jTweetList = new JList(model);
 			jTweetList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
 		}
@@ -514,17 +515,19 @@ Loginout();				}
 	}
 
 	private void RefreshTweets() {
-		jTweetList.removeAll();
+		((DefaultListModel)jTweetList.getModel()).removeAllElements();
 	//jTweetList.setListData(new String[]{"a","b","c"});
 		if(loggeduser!=null){
 
 		Vector<String> tweet = CallInvoker.getTweets(loggeduser);
 		if(tweet!=null)
-			jTweetList.setListData(tweet);
-
+			for(int i=0;i<tweet.size();i++){
+				((DefaultListModel)jTweetList.getModel()).add(i, tweet.get(i));
+			}
+		jTweetList.setVisible(true);
 		}
 		else{
-			jFollowerList.setVisible(false);
+			jTweetList.setVisible(false);
 		}
 	}
 	/**
