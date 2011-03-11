@@ -385,8 +385,8 @@ Loginout();				}
 			jTweetMenuItem.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					if(loggeduser!=null){
-					//String name = JOptionPane.showInputDialog("Message to tweet:");
-					//CallInvoker.updateUser(loggeduser,name);
+					String name = JOptionPane.showInputDialog("Message to tweet:");
+					CallInvoker.updateUser(loggeduser,name);
 					}
 				}
 			});
@@ -498,7 +498,7 @@ Loginout();				}
 	}
 
 	private void RefreshFollowing() {
-		((DefaultListModel)jFollowerList.getModel()).removeAllElements();
+		((DefaultListModel)jFollowerList.getModel()).clear();
 
 		if(loggeduser!=null){
 
@@ -512,16 +512,18 @@ Loginout();				}
 		else{
 			jFollowerList.setVisible(false);
 		}
+		//jSplitPane.validate();
+		//jSplitPane.repaint();
 	}
 
 	private void RefreshTweets() {
-		((DefaultListModel)jTweetList.getModel()).removeAllElements();
+		((DefaultListModel)jTweetList.getModel()).clear();
 	//jTweetList.setListData(new String[]{"a","b","c"});
 		if(loggeduser!=null){
 
 		Vector<String> tweet = CallInvoker.getTweets(loggeduser);
 		if(tweet!=null)
-			for(int i=0;i<tweet.size();i++){
+			for(int i=0;i<tweet.size()-1;i++){
 				((DefaultListModel)jTweetList.getModel()).add(i, tweet.get(i));
 			}
 		jTweetList.setVisible(true);
@@ -529,6 +531,7 @@ Loginout();				}
 		else{
 			jTweetList.setVisible(false);
 		}
+		jContentPane.validate();
 	}
 	/**
 	 * Method used to update the visual controls
