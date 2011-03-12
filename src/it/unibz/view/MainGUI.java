@@ -34,6 +34,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.JList;
 import javax.swing.JSplitPane;
+import java.awt.Rectangle;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 
 /**
  * This class is the initialization of our program. It is in great part
@@ -59,7 +63,6 @@ public class MainGUI {
 	private JMenuItem jFollowMenuItem = null;
 	private JMenuItem jTweetMenuItem = null;
 	private JScrollPane jScrollPane = null;
-	private JSplitPane jSplitPane = null;
 	private JScrollPane jBottomScrollPane = null;
 
 	/**
@@ -93,7 +96,9 @@ public class MainGUI {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BorderLayout());
-			jContentPane.add(getJSplitPane(), BorderLayout.CENTER);
+			jContentPane.add(getJScrollPane(), BorderLayout.NORTH);
+			jContentPane.add(getJBottomScrollPane(), BorderLayout.SOUTH);
+			jContentPane.add(getJPanel(), BorderLayout.CENTER);
 		}
 		return jContentPane;
 	}
@@ -273,6 +278,8 @@ Loginout();				}
 
 			jFollowerList = new JList(model);
 			jFollowerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			jFollowerList.setSize(new Dimension(335, 228));
+			jFollowerList.setLocation(new Point(0, 0));
 			jFollowerList.addMouseListener(new MouseListener() {
 				
 				@Override
@@ -376,13 +383,12 @@ Loginout();				}
 	}
 
 	
-	public class MyTask extends TimerTask{
+	public class MyTask implements ActionListener{
 
 		@Override
-		public void run() {
-			// TODO Auto-generated method stub
+		public void actionPerformed(ActionEvent e) {
 			RefreshFollowing();
-			RefreshTweets();
+			RefreshTweets();			
 		}
 		
 	}
@@ -401,21 +407,6 @@ Loginout();				}
 	}
 
 	/**
-	 * This method initializes jSplitPane	
-	 * 	
-	 * @return javax.swing.JSplitPane	
-	 */
-	private JSplitPane getJSplitPane() {
-		if (jSplitPane == null) {
-			jSplitPane = new JSplitPane();
-			jSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-			jSplitPane.setBottomComponent(getJBottomScrollPane());
-			jSplitPane.setTopComponent(getJScrollPane());
-		}
-		return jSplitPane;
-	}
-
-	/**
 	 * This method initializes jBottomScrollPane	
 	 * 	
 	 * @return javax.swing.JScrollPane	
@@ -429,6 +420,33 @@ Loginout();				}
 	}
 
 	/**
+	 * This method initializes jPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getJPanel() {
+		if (jPanel == null) {
+			GridBagConstraints gridBagConstraints = new GridBagConstraints();
+			gridBagConstraints.gridx = 0;
+			gridBagConstraints.gridy = 0;
+			jLabel = new JLabel();
+			jLabel.setText("ENJOY TWITTER");
+			jPanel = new JPanel();
+			jPanel.setLayout(new GridBagLayout());
+			jPanel.add(jLabel, gridBagConstraints);
+		}
+		return jPanel;
+	}
+	
+	
+
+	public MainGUI() {
+		super();
+		javax.swing.Timer t = new javax.swing.Timer(100000, new MyTask());
+    t.start();
+	}
+
+	/**
 	 * Launches this application
 	 */
 	public static void main(String[] args) {
@@ -436,19 +454,19 @@ Loginout();				}
 				MainGUI application = new MainGUI();
 				application.getJFrame().setVisible(true);
 				application.Loginout();
-				Timer timer = new Timer();
-				TimerTask task = application.new MyTask();
+
 
 				// aspetta 100 secondi prima dell'esecuzione
 				//timer.schedule( task, 100000 );
 
 				// aspetta 5 secondi prima dell'esecuzione,poi
 				// viene eseguita ogni 100 secondi
-				timer.schedule( task, 100000, 100000 ); 
 	}
 
 
 	private User loggeduser =null;  //  @jve:decl-index=0:
+	private JPanel jPanel = null;
+	private JLabel jLabel = null;
 	
 	private void Loginout() {
 		if(loginMenuItem.getText().equals("Login")){
@@ -487,11 +505,11 @@ Loginout();				}
 		for(int i=0;i<follower.size();i++){
 			((DefaultListModel)jFollowerList.getModel()).add(i, follower.get(i).getScreenName());
 		}
-		jFollowerList.setVisible(true);
+		//jFollowerList.setVisible(true);
 
 		}
 		else{
-			jFollowerList.setVisible(false);
+			//jFollowerList.setVisible(false);
 		}
 		//jSplitPane.validate();
 		//jSplitPane.repaint();
@@ -502,17 +520,17 @@ Loginout();				}
 	//jTweetList.setListData(new String[]{"a","b","c"});
 		if(loggeduser!=null){
 
-		Vector<String> tweet = CallInvoker.getTweets(loggeduser);
+		ArrayList<String> tweet = CallInvoker.getTweets(loggeduser);
 		if(tweet!=null)
 			for(int i=0;i<tweet.size()-1;i++){
 				((DefaultListModel)jTweetList.getModel()).add(i, tweet.get(i));
 			}
-		jTweetList.setVisible(true);
+		//jTweetList.setVisible(true);
 		}
 		else{
-			jTweetList.setVisible(false);
+			//jTweetList.setVisible(false);
 		}
-		jContentPane.validate();
+		//jContentPane.validate();
 		int tweets=CallInvoker.getNotifications();
 		if(tweets>0)
 		JOptionPane.showMessageDialog(getJFrame(), "You have "+tweets+" new Tweets!");

@@ -28,7 +28,7 @@ import org.xml.sax.InputSource;
 
 public class CallInvoker {
 	private static OAuthConsumer consumer=null;
-	private static Vector<String> ret = null;
+	private static ArrayList<String> ret = null;
 	private static int not = 0;
 
 
@@ -71,16 +71,19 @@ public class CallInvoker {
 		return consumer;
 	}
 
-	public static Vector<String> getTweets(User user) {
-		String tweets = useService(user, "http://api.twitter.com/1/statuses/home_timeline.xml?count=20");
+	public static ArrayList<String> getTweets(User user) {
+		String tweets = useService(user, "http://api.twitter.com/1/statuses/home_timeline.xml?count=21");
 		Document dom = stringToDom(tweets);
 		NodeList nodeList = dom.getElementsByTagName("status");
-		if (ret == null) ret = new Vector<String>();
+		if (ret == null) 
+			ret = new ArrayList<String>();
 		String temp;
-		not=0;
+ 		not=0;
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			temp = getXmlElement(dom,i,"screen_name")+": "+getXmlElement(dom,i,"text");
-			if (!ret.contains(temp)){
+			if (!ret.contains(temp)){	  
+			  if(ret.size()>20)
+			  	ret.remove(20);
 			  ret.add(temp);
 			  not++;
 			}
