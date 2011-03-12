@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -131,7 +130,7 @@ public class CallInvoker {
 	}
 
 	private static String getFollowerInfo(User u, String id, String tag){
-		String userInfo = useService(u, "http://api.twitter.com/1/users/show.xml?user_id="+id);
+		String userInfo = useService(u, "http://api.twitter.com/1/users/show.xml?user_id="+urlEncoder(id));
 		Document dom = stringToDom(userInfo);
 		return getXmlElement(dom,0,tag);
 	}
@@ -141,7 +140,7 @@ public class CallInvoker {
 	}
 
 	public static boolean unfollowUser(User u,String unfollowerScreen) {
-		String unfollowUser = useService(u, "http://api.twitter.com/1/friendships/destroy.xml?screen_name="+unfollowerScreen, "POST");
+		String unfollowUser = useService(u, "http://api.twitter.com/1/friendships/destroy.xml?screen_name="+urlEncoder(unfollowerScreen), "POST");
 		Document dom = stringToDom(unfollowUser);
 		if (getXmlElement(dom,0,"screen_name").equals(unfollowerScreen))
 			return true;
@@ -150,7 +149,7 @@ public class CallInvoker {
 	}
 
 	public static boolean followUser(User u,String followerScreen) {
-		String followUser = useService(u, "http://api.twitter.com/1/friendships/create.xml?screen_name="+followerScreen,"POST");
+		String followUser = useService(u, "http://api.twitter.com/1/friendships/create.xml?screen_name="+urlEncoder(followerScreen),"POST");
 		Document dom = stringToDom(followUser);
 		if (getXmlElement(dom,0,"screen_name").equals(followerScreen))
 			return true;
@@ -159,14 +158,17 @@ public class CallInvoker {
 	}
 
 	public static void updateUser(User u, String status) {
+		useService(u, "http://api.twitter.com/1/statuses/update.xml?status="+urlEncoder(status),"POST");
+	}
+	
+	private static String urlEncoder(String url){
 		String encodedData=null;
 		try {
-			encodedData = URLEncoder.encode(status, "UTF-8");
+			encodedData = URLEncoder.encode(url, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		useService(u, "http://api.twitter.com/1/statuses/update.xml?status="+encodedData,"POST");
+		return encodedData;
 	}
 
 }

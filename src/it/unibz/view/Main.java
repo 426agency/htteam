@@ -14,7 +14,6 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		while(true){
-		// TODO Auto-generated method stub
 System.out.println("Welcome to twitter");
 System.out.println("What do you wanna do: 1.Login 2.Logout 3.Exit 4.GetFollowing 5.boh");
 //open up standard input
