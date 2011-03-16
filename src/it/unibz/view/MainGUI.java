@@ -48,12 +48,8 @@ public class MainGUI {
 	private JMenuBar jJMenuBar = null;
 	private JMenu fileMenu = null;
 	public static final String NUMERIC = "0123456789";
-	private JMenu helpMenu = null;
 	private JMenuItem exitMenuItem = null;
-	private JMenuItem aboutMenuItem = null;
 	public JMenuItem loginMenuItem = null;
-	private JDialog aboutDialog = null;
-	private JPanel aboutContentPane = null;
 	private JLabel aboutVersionLabel = null;
 	public JList jTweetList = null;
 	public JList jFollowerList = null;
@@ -106,7 +102,6 @@ public class MainGUI {
 		if (jJMenuBar == null) {
 			jJMenuBar = new JMenuBar();
 			jJMenuBar.add(getFileMenu());
-			jJMenuBar.add(getHelpMenu());
 		}
 		return jJMenuBar;
 	}
@@ -129,20 +124,6 @@ public class MainGUI {
 	}
 
 	/**
-	 * This method initializes jMenu for "Help"
-	 * 
-	 * @return javax.swing.JMenu
-	 */
-	private JMenu getHelpMenu() {
-		if (helpMenu == null) {
-			helpMenu = new JMenu();
-			helpMenu.setText("Help");
-			helpMenu.add(getAboutMenuItem());
-		}
-		return helpMenu;
-	}
-
-	/**
 	 * This method initializes jMenuItem for exiting the program
 	 * 
 	 * @return javax.swing.JMenuItem
@@ -158,57 +139,6 @@ public class MainGUI {
 			});
 		}
 		return exitMenuItem;
-	}
-
-	/**
-	 * This method initializes jMenuItem for the About window
-	 * 
-	 * @return javax.swing.JMenuItem
-	 */
-	private JMenuItem getAboutMenuItem() {
-		if (aboutMenuItem == null) {
-			aboutMenuItem = new JMenuItem();
-			aboutMenuItem.setText("Authors");
-			aboutMenuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					JDialog aboutDialog = getAboutDialog();
-					aboutDialog.pack();
-					Point loc = getJFrame().getLocation();
-					loc.translate(20, 20);
-					aboutDialog.setLocation(loc);
-					aboutDialog.setVisible(true);
-				}
-			});
-		}
-		return aboutMenuItem;
-	}
-
-	/**
-	 * This method initializes aboutDialog
-	 * 
-	 * @return javax.swing.JDialog
-	 */
-	private JDialog getAboutDialog() {
-		if (aboutDialog == null) {
-			aboutDialog = new JDialog(getJFrame(), true);
-			aboutDialog.setTitle("Authors");
-			aboutDialog.setContentPane(getAboutContentPane());
-		}
-		return aboutDialog;
-	}
-
-	/**
-	 * This method initializes aboutContentPane
-	 * 
-	 * @return javax.swing.JPanel
-	 */
-	private JPanel getAboutContentPane() {
-		if (aboutContentPane == null) {
-			aboutContentPane = new JPanel();
-			aboutContentPane.setLayout(new BorderLayout());
-			aboutContentPane.add(getAboutVersionLabel(), BorderLayout.CENTER);
-		}
-		return aboutContentPane;
 	}
 
 	/**
@@ -256,7 +186,7 @@ Loginout();				}
 
 			jTweetList = new JList(model);
 			jTweetList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			jTweetList.setVisibleRowCount(20);
+			jTweetList.setVisibleRowCount(200);
 			
 		}
 		return jTweetList;
@@ -427,11 +357,29 @@ Loginout();				}
 	 */
 	private JTabbedPane getJTabbedPane() {
 		if (jTabbedPane == null) {
-			jTabbedPane = new JTabbedPane(2);
+			jTabbedPane = new JTabbedPane();
+			jTabbedPane.addTab("Welcome", null, getJPanel(), null);
 			jTabbedPane.addTab("Followers", null, getJScrollPane(), null);
 			jTabbedPane.addTab("Tweets", null, getJBottomScrollPane(), null);
 		}
 		return jTabbedPane;
+	}
+
+	/**
+	 * This method initializes jPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getJPanel() {
+		if (jPanel == null) {
+			GridBagConstraints gridBagConstraints = new GridBagConstraints();
+			gridBagConstraints.gridx = 0;
+			gridBagConstraints.gridy = 1;
+			jPanel = new JPanel();
+			jPanel.setLayout(new GridBagLayout());
+			jPanel.add(getAboutVersionLabel(), gridBagConstraints);
+		}
+		return jPanel;
 	}
 
 	/**
@@ -454,7 +402,7 @@ Loginout();				}
 
 	private User loggeduser =null;  //  @jve:decl-index=0:
 	private JTabbedPane jTabbedPane = null;
-	
+	private JPanel jPanel = null;
 	private void Loginout() {
 		if(loginMenuItem.getText().equals("Login")){
 			loggeduser = OAuthProducer.getOAuthAccessToken();
@@ -515,7 +463,8 @@ Loginout();				}
 		else{
 			//jTweetList.setVisible(false);
 		}
-		//jContentPane.validate();
+		jTweetList.repaint();
+		jTabbedPane.validate();
 		int tweets=CallInvoker.getNotifications();
 		if(tweets>0)
 		JOptionPane.showMessageDialog(getJFrame(), "You have "+tweets+" new Tweets!");
