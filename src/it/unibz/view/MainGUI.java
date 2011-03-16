@@ -59,6 +59,7 @@ public class MainGUI {
 	private JMenuItem jTweetMenuItem = null;
 	private JScrollPane jScrollPane = null;
 	private JScrollPane jBottomScrollPane = null;
+	private DefaultListModel tweetmodel=null;
 
 	/**
 	 * This method initializes the jFrame, the general graphical container of
@@ -184,11 +185,11 @@ Loginout();				}
 	 */
 	private JList getJTweetList() {
 		if (jTweetList == null) {
-			DefaultListModel model = new DefaultListModel();
+			tweetmodel = new DefaultListModel();
 
-			jTweetList = new JList(model);
+			jTweetList = new JList(tweetmodel);
 			jTweetList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			jTweetList.setVisibleRowCount(200);
+			jTweetList.setVisibleRowCount(20);
 			
 		}
 		return jTweetList;
@@ -462,22 +463,22 @@ Loginout();				}
 	}
 
 	private void RefreshTweets() {
-		jTweetList.removeAll();
-		((DefaultListModel)jTweetList.getModel()).clear();
-		((DefaultListModel)jTweetList.getModel()).removeAllElements();
+		tweetmodel.clear();
+
 	//jTweetList.setListData(new String[]{"a","b","c"});
 		if(loggeduser!=null){
 
 		ArrayList<String> tweet = CallInvoker.getTweets(loggeduser);
 		if(tweet!=null)
 			for(int i=0;i<tweet.size()-1;i++){
-				((DefaultListModel)jTweetList.getModel()).add(i, tweet.get(i));
+				tweetmodel.add(i, tweet.get(i));
 			}
 		//jTweetList.setVisible(true);
 		}
 		else{
 			//jTweetList.setVisible(false);
 		}
+		jTweetList.setModel(tweetmodel);
 		int tweets=CallInvoker.getNotifications();
 		if(tweets>0)
 		JOptionPane.showMessageDialog(getJFrame(), "You have "+tweets+" new Tweets!");

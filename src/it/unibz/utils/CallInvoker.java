@@ -76,17 +76,17 @@ public class CallInvoker {
 		NodeList nodeList = dom.getElementsByTagName("status");
 		if (ret == null) 
 			ret = new ArrayList<String>();
+		ArrayList<String> t = new ArrayList<String>();
 		String temp;
  		not=0;
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			temp = getXmlElement(dom,i,"screen_name")+": "+getXmlElement(dom,i,"text");
+			t.add(temp);
 			if (!ret.contains(temp)){	  
-			  if(ret.size()>20)
-			  	ret.remove(20);
-			  ret.add(temp);
 			  not++;
 			}
 		}
+		ret=t;
 		return ret;
 	}
 
