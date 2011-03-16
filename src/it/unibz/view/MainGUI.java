@@ -35,6 +35,8 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * This class is the initialization of our program. It is in great part
@@ -346,8 +348,8 @@ Loginout();				}
 
 	public MainGUI() {
 		super();
-		javax.swing.Timer t = new javax.swing.Timer(100000, new MyTask());
-    t.start();
+		//javax.swing.Timer t = new javax.swing.Timer(100000, new MyTask());
+    //t.start();
 	}
 
 	/**
@@ -361,6 +363,17 @@ Loginout();				}
 			jTabbedPane.addTab("Welcome", null, getJPanel(), null);
 			jTabbedPane.addTab("Followers", null, getJScrollPane(), null);
 			jTabbedPane.addTab("Tweets", null, getJBottomScrollPane(), null);
+			jTabbedPane.addChangeListener(new ChangeListener() {
+				
+				@Override
+				public void stateChanged(ChangeEvent arg0) {
+					int sel = ((JTabbedPane)arg0.getSource()).getSelectedIndex();
+					if(sel==2)
+						RefreshTweets();
+					if(sel==1)
+						RefreshFollowing();
+				}
+			});
 		}
 		return jTabbedPane;
 	}
@@ -425,8 +438,8 @@ Loginout();				}
 			loggeduser=null;
 			loginMenuItem.setText("Login");
 		}
-		RefreshFollowing();
-		RefreshTweets();
+		//RefreshFollowing();
+		//RefreshTweets();
 	}
 
 	private void RefreshFollowing() {
@@ -449,7 +462,9 @@ Loginout();				}
 	}
 
 	private void RefreshTweets() {
+		jTweetList.removeAll();
 		((DefaultListModel)jTweetList.getModel()).clear();
+		((DefaultListModel)jTweetList.getModel()).removeAllElements();
 	//jTweetList.setListData(new String[]{"a","b","c"});
 		if(loggeduser!=null){
 
@@ -463,8 +478,6 @@ Loginout();				}
 		else{
 			//jTweetList.setVisible(false);
 		}
-		jTweetList.repaint();
-		jTabbedPane.validate();
 		int tweets=CallInvoker.getNotifications();
 		if(tweets>0)
 		JOptionPane.showMessageDialog(getJFrame(), "You have "+tweets+" new Tweets!");
