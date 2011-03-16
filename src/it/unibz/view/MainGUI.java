@@ -34,6 +34,7 @@ import javax.swing.JList;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import javax.swing.JTabbedPane;
 
 /**
  * This class is the initialization of our program. It is in great part
@@ -76,7 +77,6 @@ public class MainGUI {
 			jFrame.setResizable(false);
 			jFrame.setContentPane(getJContentPane());
 			jFrame.setTitle("Twitter Client");
-			UpdateControls(false);
 
 		}
 		return jFrame;
@@ -92,9 +92,7 @@ public class MainGUI {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BorderLayout());
-			jContentPane.add(getJScrollPane(), BorderLayout.NORTH);
-			jContentPane.add(getJBottomScrollPane(), BorderLayout.SOUTH);
-			jContentPane.add(getJPanel(), BorderLayout.CENTER);
+			jContentPane.add(getJTabbedPane(), BorderLayout.CENTER);
 		}
 		return jContentPane;
 	}
@@ -248,7 +246,7 @@ Loginout();				}
 	}
 
 	/**
-	 * This method initializes jFollowerList	
+	 * This method initializes getJTweetList()	
 	 * 	
 	 * @return javax.swing.JList	
 	 */
@@ -258,6 +256,7 @@ Loginout();				}
 
 			jTweetList = new JList(model);
 			jTweetList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			jTweetList.setVisibleRowCount(20);
 			
 		}
 		return jTweetList;
@@ -274,8 +273,7 @@ Loginout();				}
 
 			jFollowerList = new JList(model);
 			jFollowerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			jFollowerList.setSize(new Dimension(335, 228));
-			jFollowerList.setLocation(new Point(0, 0));
+			jFollowerList.setVisibleRowCount(20);
 			jFollowerList.addMouseListener(new MouseListener() {
 				
 				@Override
@@ -371,6 +369,7 @@ Loginout();				}
 					if(loggeduser!=null){
 					String name = JOptionPane.showInputDialog("Message to tweet:");
 					CallInvoker.updateUser(loggeduser,name);
+					RefreshTweets();
 					}
 				}
 			});
@@ -415,31 +414,24 @@ Loginout();				}
 		return jBottomScrollPane;
 	}
 
-	/**
-	 * This method initializes jPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getJPanel() {
-		if (jPanel == null) {
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 0;
-			gridBagConstraints.gridy = 0;
-			jLabel = new JLabel();
-			jLabel.setText("ENJOY TWITTER");
-			jPanel = new JPanel();
-			jPanel.setLayout(new GridBagLayout());
-			jPanel.add(jLabel, gridBagConstraints);
-		}
-		return jPanel;
-	}
-	
-	
-
 	public MainGUI() {
 		super();
 		javax.swing.Timer t = new javax.swing.Timer(100000, new MyTask());
     t.start();
+	}
+
+	/**
+	 * This method initializes jTabbedPane	
+	 * 	
+	 * @return javax.swing.JTabbedPane	
+	 */
+	private JTabbedPane getJTabbedPane() {
+		if (jTabbedPane == null) {
+			jTabbedPane = new JTabbedPane(2);
+			jTabbedPane.addTab("Followers", null, getJScrollPane(), null);
+			jTabbedPane.addTab("Tweets", null, getJBottomScrollPane(), null);
+		}
+		return jTabbedPane;
 	}
 
 	/**
@@ -451,18 +443,17 @@ Loginout();				}
 				application.getJFrame().setVisible(true);
 				application.Loginout();
 
-
 				// aspetta 100 secondi prima dell'esecuzione
 				//timer.schedule( task, 100000 );
 
 				// aspetta 5 secondi prima dell'esecuzione,poi
 				// viene eseguita ogni 100 secondi
+				
 	}
 
 
 	private User loggeduser =null;  //  @jve:decl-index=0:
-	private JPanel jPanel = null;
-	private JLabel jLabel = null;
+	private JTabbedPane jTabbedPane = null;
 	
 	private void Loginout() {
 		if(loginMenuItem.getText().equals("Login")){
@@ -486,10 +477,8 @@ Loginout();				}
 			loggeduser=null;
 			loginMenuItem.setText("Login");
 		}
-		
 		RefreshFollowing();
 		RefreshTweets();
-
 	}
 
 	private void RefreshFollowing() {
@@ -531,12 +520,5 @@ Loginout();				}
 		if(tweets>0)
 		JOptionPane.showMessageDialog(getJFrame(), "You have "+tweets+" new Tweets!");
 	}
-	/**
-	 * Method used to update the visual controls
-	 */
-	private void UpdateControls(boolean iskmeans) {
 
-		
-		
-	}
 }
