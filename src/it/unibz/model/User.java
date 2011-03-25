@@ -1,5 +1,9 @@
 package it.unibz.model;
 
+/**
+ * Represents the currently logged in user having the two keys
+ *
+ */
 public class User {
 	
 	String accesstoken=null;

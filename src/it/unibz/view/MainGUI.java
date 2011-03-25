@@ -4,10 +4,10 @@ package it.unibz.view;
 import it.unibz.model.Follower;
 import it.unibz.model.User;
 import it.unibz.utils.CallInvoker;
+import it.unibz.utils.OAuthProducer;
 
 import java.awt.BorderLayout;
 import java.awt.Event;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -16,7 +16,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -31,7 +30,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.JList;
 
-import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JTabbedPane;
@@ -241,7 +239,6 @@ Loginout();				}
 						contextMenu.add(mi);
 							contextMenu.show (arg0.getComponent(), arg0.getX (), arg0.getY ());
 							
-						//contextMenu.setVisible(true);
 					}			
 				}
 				
@@ -404,12 +401,6 @@ Loginout();				}
 				MainGUI application = new MainGUI();
 				application.getJFrame().setVisible(true);
 				application.Loginout();
-
-				// aspetta 100 secondi prima dell'esecuzione
-				//timer.schedule( task, 100000 );
-
-				// aspetta 5 secondi prima dell'esecuzione,poi
-				// viene eseguita ogni 100 secondi
 				
 	}
 
@@ -439,8 +430,6 @@ Loginout();				}
 			loggeduser=null;
 			loginMenuItem.setText("Login");
 		}
-		//RefreshFollowing();
-		//RefreshTweets();
 	}
 
 	private void RefreshFollowing() {
@@ -452,20 +441,12 @@ Loginout();				}
 		for(int i=0;i<follower.size();i++){
 			((DefaultListModel)jFollowerList.getModel()).add(i, follower.get(i).getScreenName());
 		}
-		//jFollowerList.setVisible(true);
-
 		}
-		else{
-			//jFollowerList.setVisible(false);
-		}
-		//jSplitPane.validate();
-		//jSplitPane.repaint();
 	}
 
 	private void RefreshTweets() {
 		tweetmodel.clear();
 
-	//jTweetList.setListData(new String[]{"a","b","c"});
 		if(loggeduser!=null){
 
 		ArrayList<String> tweet = CallInvoker.getTweets(loggeduser);
@@ -473,10 +454,6 @@ Loginout();				}
 			for(int i=0;i<tweet.size()-1;i++){
 				tweetmodel.add(i, tweet.get(i));
 			}
-		//jTweetList.setVisible(true);
-		}
-		else{
-			//jTweetList.setVisible(false);
 		}
 		jTweetList.setModel(tweetmodel);
 		int tweets=CallInvoker.getNotifications();

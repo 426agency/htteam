@@ -1,5 +1,9 @@
 package it.unibz.model;
 
+/**
+ * Class represents a Twitter Follower with ID, Name and Screenname for future expansion of the client
+ *
+ */
 public class Follower {
 
 	private String id;

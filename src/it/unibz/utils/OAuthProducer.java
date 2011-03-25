@@ -1,4 +1,4 @@
-package it.unibz.view;
+package it.unibz.utils;
 
 import it.unibz.model.User;
 
@@ -39,13 +39,7 @@ public class OAuthProducer {
 		provider= new DefaultOAuthProvider("http://twitter.com/oauth/request_token",
 				"http://twitter.com/oauth/access_token", "http://twitter.com/oauth/authorize");
 
-		//        System.out.println("Fetching request token from Twitter...");
-
-		// we do not support callbacks, thus pass OOB
 		String authUrl = provider.retrieveRequestToken(consumer, OAuth.OUT_OF_BAND);
-
-		//        System.out.println("Request token: " + consumer.getToken());
-		//        System.out.println("Token secret: " + consumer.getTokenSecret());
 
 		final JEditorPane jep = new JEditorPane();
 		jep.setEditable(false);
@@ -58,9 +52,7 @@ public class OAuthProducer {
 				if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							// TIP: Show hand cursor
 							SwingUtilities.getWindowAncestor(jep).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-							// TIP: Show URL as the tooltip
 							jep.setToolTipText(e.getURL().toExternalForm());
 						}
 					});
@@ -69,48 +61,31 @@ public class OAuthProducer {
 						public void run() {
 							// Show default cursor
 							SwingUtilities.getWindowAncestor(jep).setCursor(Cursor.getDefaultCursor());
-
 							// Reset tooltip
 							jep.setToolTipText(null);
 						}
 					});
 				} else if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-					// TIP: Starting with JDK6 you can show the URL in desktop browser
 					if (Desktop.isDesktopSupported()) {
 						try {
 							Desktop.getDesktop().browse(e.getURL().toURI());
 						} catch (Exception ex) {
-							// Logger.getLogger(NetBeansDay2008.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
 						}
 					}
-					//System.out.println("Go to URL: " + e.getURL());
 				}
 			}
 		});
 
 		String pin = JOptionPane.showInputDialog(i,new JScrollPane(jep),"Grant Application Access", JOptionPane.PLAIN_MESSAGE);
 
-		// BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		// String pin = br.readLine();
-
-		//System.out.println("Fetching access token from Twitter...");
-
-
 		provider.retrieveAccessToken(consumer, pin);
-
-		//System.out.println("Access token: " + consumer.getToken());
-		//System.out.println("Token secret: " + consumer.getTokenSecret());
 
 		URL url = new URL("http://twitter.com/statuses/mentions.xml");
 		HttpURLConnection request = (HttpURLConnection) url.openConnection();
 
 		consumer.sign(request);
 
-		//System.out.println("Sending request to Twitter...");
 		request.connect();
-
-		//System.out.println("Response: " + request.getResponseCode() + " "
-		//      + request.getResponseMessage());
 
 		//Store Keys in properties
 		Properties properties = new Properties();
@@ -146,6 +121,9 @@ public class OAuthProducer {
 
 	}
 
+	/**
+	 * Revoke access by just ereasing data
+	 */
 	public static void removeAccess() {
 		Properties properties = new Properties();
 		try {
