@@ -27,11 +27,21 @@ import oauth.signpost.basic.DefaultOAuthConsumer;
 import oauth.signpost.basic.DefaultOAuthProvider;
 
 
-
+/**
+ * Class provides the MEthods for the OAuth Autentication
+ *
+ */
 public class OAuthProducer {
 
 	private static OAuthProvider provider =null;
 
+	/**
+	 * Method allows user to grant this application to access its data by obtaining 
+	 * Token & Secrets via PIN by Twitter online
+	 * @param i JFrame for the JoptionPane reference
+	 * @return User Object
+	 * @throws Exception
+	 */
 	public static User getFirstTimeAccessCode(JFrame i) throws Exception{
 
 		OAuthConsumer consumer = new DefaultOAuthConsumer("Kgrg9GlpGU8yoza6u1KqQQ", "bZUrgRsSWu9JiXMsE9mFFT5pcosZzPv4vKca7nhZsE");
